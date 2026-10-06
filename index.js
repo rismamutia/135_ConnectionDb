@@ -1,7 +1,8 @@
 import express from 'express'
-import pg, { Pool } from 'pg'
+import pg  from 'pg'
 const app = express()
 const port = 3000
+const { Pool } = pg
 
 app.use(express.json())
 app.use(
@@ -10,7 +11,7 @@ app.use(
     })
 )
 
-const pool = new pool({
+const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'mahasiswa',
@@ -18,15 +19,3 @@ const pool = new pool({
     port: 5433,
 })
 
-app.get('/', (req, res, next) => {
-    console.log("TEST DATA :");
-    pool.query('select * from biodata')
-        .then(testData => {
-            console.log(testData);
-            res.send(testData.rows);
-        })
-        .catch(err => {
-            console.error(err);
-            res.status(500).send('Internal Server Error')
-        });
-})
